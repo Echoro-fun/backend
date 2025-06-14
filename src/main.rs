@@ -49,7 +49,7 @@ async fn main() -> Result<()> {
         App::new()
             .app_data(web::Data::new(db.clone()))
             .route("/health", web::get().to(health_check))
-            .route("/api/mail/{email}", web::get().to(add_email_to_mailing_list))
+            .route("/api/mail/{email}", web::post().to(add_email_to_mailing_list))
     })
     .bind(format!("{}:{}", host, port))?
     .workers(2)
