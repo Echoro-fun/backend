@@ -8,11 +8,15 @@ async fn exists_in_db(email: &str, db: &DatabaseConnection) -> bool {
     match Mail::find()
         .filter(mail::Column::Email.contains(email))
         .order_by_asc(mail::Column::Email)
-        .all(db)
+        .one(db)
         .await
     {
-        Ok(_) => true,
-        Err(_) => false,
+        Ok(Some(_)) => true,
+        Ok(_) => false,
+        Err(err) => {
+            eprintln!("Database query error: {}", err);
+            false
+        }
     }
 }
 
