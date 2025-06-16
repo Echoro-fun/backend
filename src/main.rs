@@ -1,8 +1,8 @@
 pub mod services;
 
 use actix_web::{web, App, HttpServer};
-use sea_orm::Database;
 use dotenv::dotenv;
+use sea_orm::Database;
 use std::env;
 use std::io::Result;
 
@@ -26,7 +26,10 @@ async fn main() -> Result<()> {
         App::new()
             .app_data(web::Data::new(db.clone()))
             .route("/health", web::get().to(health_check))
-            .route("/api/mail/{email}", web::post().to(add_email_to_mailing_list))
+            .route(
+                "/api/mail/{email}",
+                web::post().to(add_email_to_mailing_list),
+            )
     })
     .bind(format!("{}:{}", host, port))?
     .workers(2)
