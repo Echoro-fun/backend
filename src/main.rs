@@ -1,35 +1,12 @@
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
+pub mod services;
+
+use actix_web::{web, App, HttpServer};
+use sea_orm::Database;
 use dotenv::dotenv;
-use sea_orm::{ActiveModelTrait, Database, DatabaseConnection, Set};
 use std::env;
 use std::io::Result;
 
-use entity::mail::ActiveModel as MailActiveModel;
-
-async fn health_check() -> impl Responder {
-    format!("Echoro backend server running...")
-}
-
-async fn add_email_to_mailing_list(
-    db: web::Data<DatabaseConnection>,
-    path: web::Path<String>,
-) -> impl Responder {
-    let email = path.into_inner();
-    println!("Adding email to mailing list: {}", email);
-
-    let new_entry = MailActiveModel {
-        email: Set(email),
-        ..Default::default()
-    };
-
-    match new_entry.insert(db.get_ref()).await {
-        Ok(_) => HttpResponse::Ok().body("Email saved successfully"),
-        Err(err) => {
-            eprintln!("Insert error: {}", err);
-            HttpResponse::InternalServerError().body("Failed to save email")
-        }
-    }
-}
+pub use services::{health::health_check, mail::add_email_to_mailing_list};
 
 #[actix_web::main]
 async fn main() -> Result<()> {

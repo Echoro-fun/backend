@@ -1013,6 +1013,7 @@ dependencies = [
  "entity",
  "sea-orm",
  "sea-orm-migration",
+ "serde",
 ]
 
 [[package]]
