@@ -63,15 +63,15 @@ pub struct MailError {
 }
 
 impl error::ResponseError for MailError {
+    fn status_code(&self) -> StatusCode {
+        self.status_code
+    }
+
     fn error_response(&self) -> HttpResponse {
         HttpResponse::build(self.status_code).json(MailResponse::<()> {
             message: self.message.clone(),
             data: None,
         })
-    }
-
-    fn status_code(&self) -> StatusCode {
-        self.status_code
     }
 }
 
