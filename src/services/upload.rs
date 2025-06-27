@@ -8,12 +8,16 @@ use sea_orm::{
     Set,
 };
 use serde::Serialize;
-use std::{fs::{create_dir_all, File}, io::Write};
+use solana_sdk::signer::keypair::Keypair;
+use std::{env, fs::{create_dir_all, File}, io::Write};
 
 pub async fn upload_audio_file(
     db: web::Data<DatabaseConnection>,
     mut payload: Multipart,
 ) -> Result<impl Responder, UploadError> {
+    let payer_key = env::var("SECRET_KEY").expect("SECRET_KEY must be set");
+    let payer = Keypair::from_base58_string(&payer_key);
+
     create_dir_all("./data").map_err(|e| UploadError {
         message: format!("Failed to create data directory: {}", e),
         status_code: StatusCode::INTERNAL_SERVER_ERROR,
