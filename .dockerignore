@@ -6,3 +6,6 @@ target/
 
 Dockerfile
 .dockerignore
+
+.DS_Store
+**/.DS_Store
