@@ -1,14 +1,15 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
-use std::fs::Metadata;
+use Uuid;
 
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
 #[sea_orm(table_name = "uploads_table")]
 pub struct Model {
-    #[sea_orm(primary_key, unique, indexed, auto_increment = true)]
-    pub id: i32,
+    #[sea_orm(primary_key)]
+    pub id: Uuid,
     pub name: String,
     pub symbol: String,
+    pub decimal: u8,
     #[sea_orm(unique)]
     pub audio_uri: String,
     #[sea_orm(unique)]

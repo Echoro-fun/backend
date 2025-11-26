@@ -5,7 +5,7 @@ use actix_web::{middleware, web, App, HttpServer};
 use dotenv::dotenv;
 use sea_orm::Database;
 pub use services::{
-    health::health_check, mail::add_email_to_mailing_list, upload::upload_audio_file,
+    health::health_check, mail::add_email_to_mailing_list, upload::upload_token_data,
 };
 use std::env;
 use std::io::Result;
@@ -35,7 +35,7 @@ async fn main() -> Result<()> {
                 "/api/mail/{email}",
                 web::post().to(add_email_to_mailing_list),
             )
-            .route("/api/upload", web::post().to(upload_audio_file))
+            .route("/api/upload", web::post().to(upload_token_data))
     })
     .bind(format!("{}:{}", host, port))?
     .run()

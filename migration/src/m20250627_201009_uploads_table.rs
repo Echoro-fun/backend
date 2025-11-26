@@ -11,9 +11,16 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Upload::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(Upload::Id).uuid().not_null().primary_key())
+                    .col(
+                        ColumnDef::new(Upload::Id)
+                        .uuid()
+                        .not_null()
+                        .primary_key()
+                        .default(Expr::cust("gen_random_uuid()"))
+                    )
                     .col(ColumnDef::new(Upload::Name).string().not_null())
                     .col(ColumnDef::new(Upload::Symbol).string().not_null())
+                    .col(ColumnDef::new(Upload::Decimal).integer().not_null())
                     .col(
                         ColumnDef::new(Upload::AudioUri)
                             .string()
@@ -51,6 +58,7 @@ enum Upload {
     Id,
     Name,
     Symbol,
+    Decimal,
     AudioUri,
     ImageUri,
     MetadataUri,

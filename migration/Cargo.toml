@@ -20,4 +20,5 @@ features = [
   # e.g.
     "runtime-tokio-rustls",  # `ASYNC_RUNTIME` feature
     "sqlx-postgres",         # `DATABASE_DRIVER` feature
+    "with-uuid",             # Optional feature to support `uuid` type
 ]
